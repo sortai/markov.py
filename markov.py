@@ -1,3 +1,4 @@
+from bldup import bldup
 
 class markov:
     def __init__(self, base=None, blsize=1):
@@ -6,5 +7,11 @@ class markov:
         if type(base) == dict:
             self.graph = dict(base)
         else:
-            for x in base: #iterability test
-                pass
+            self.graph=dict()
+            for t0, t1 in bldup(base,blsize): #iterability test (indirect)
+                try: self.graph[t0][t1]+=1
+                except KeyError:
+                    try: self.graph[t0][t1]=1
+                    except KeyError:
+                        self.graph[t0]={t1:1}
+        
