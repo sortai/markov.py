@@ -14,4 +14,6 @@ class markov:
                     try: self.graph[t0][t1]=1
                     except KeyError:
                         self.graph[t0]={t1:1}
-        
+        self.normalize()
+    def normalize(self):
+        pass
