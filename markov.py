@@ -20,14 +20,22 @@ class markov:
             for i in range(len(base)-plen+1):
                 try: self.pats[base[i:i+plen]] += 1
                 except KeyError: self.pats[base[i:i+plen]] = 1
-    def apply(self, base, n = 0):
+    def apply(self, base, n = 1, over = None):
         bls = dict()
         for co in self.pats:
-            for l in range(1, len(base)):
-                ptm = base[-l:]
-                if co.startswith(ptm):
-                    try: bls[co[l:]]+=self.pats[co]
-                    except KeyError: bls[co[l:]]=self.pats[co]
+            if over is None:
+                for ov in range(1,len(co)+1):
+                    ob = base[-ov:]
+                    op = co[:ov]
+                    if ob == op:
+                        try: bls[co[ov:]] += self.pats[co]
+                        except KeyError: bls[co[ov:]] = self.pats[co]
+            else:
+                ob = base[-over:]
+                op = co[:over]
+                if ob == op:
+                    try: bls[co[over:]] += self.pats[co]
+                    except KeyError: bls[co[over:]] = self.pats[co]
         if n <= 0: return bls
         obls = bls
         bls = dict()
@@ -42,8 +50,8 @@ class markov:
         for co in obls:
             if len(co) < n:
                 for tco in bls:
-                    if tco.startswith(co): bls[tco]+=obsl[co]
+                    if tco.startswith(co): bls[tco]+=obls[co]
         return bls
-    def complete(self, base, n=0):
-        pco = self.apply(base, n)
+    def complete(self, base, n=0, over = None):
+        pco = self.apply(base, n, over)
         return rchoose(pco)
