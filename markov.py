@@ -6,9 +6,6 @@ class markov:
         if type(base) == dict:
             self.graph = dict(base)
         else:
-            try:
-                for x in base:
-                    break
-            except TypeError as e:
-                raise TypeError("base template is not iterable").with_traceback(e.__traceback__)
+            for x in base: #iterability test
+                break
         
