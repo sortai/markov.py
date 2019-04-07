@@ -55,3 +55,4 @@ class markov:
     def complete(self, base, n=0, over = None):
         pco = self.apply(base, n, over)
         return rchoose(pco)
+
